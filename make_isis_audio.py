@@ -16,7 +16,7 @@ import numpy as np
 
 ISIS = 'ISiS/ISiS_V1.3.0_Linux_x86_64/isis.sh'
 CORPORA = os.path.abspath('ISiS')
-MP3 = 'Cantique_sung_isis.mp3'
+MP3 = 'Cantique_sung.mp3'
 SR = 48000                      # ISiS native rate
 
 # (part, ISiS voice, gain, pan)

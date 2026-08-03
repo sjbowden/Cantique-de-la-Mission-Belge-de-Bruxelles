@@ -21,8 +21,8 @@ import gen_musicxml as score   # note tables S/A/T/B + pitch parser
 
 SF2 = sys.argv[1] if len(sys.argv) > 1 else 'GeneralUserGS.sf2'
 SF2_URL = 'https://github.com/mrbumpy409/GeneralUser-GS/raw/main/GeneralUser-GS.sf2'
-WAV = 'Cantique.wav'
-MP3 = 'Cantique.mp3'
+WAV = 'Cantique_instrumental.wav'
+MP3 = 'Cantique_instrumental.mp3'
 
 SR = 44100
 BPM = 104                      # sturdy hymn tempo

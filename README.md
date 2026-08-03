@@ -20,10 +20,10 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
     python3 gen_musicxml.py
     python3 make_pdf.py
 
-- `make_audio.py` — renders the hymn to audio (`Cantique.mp3`): choir +
+- `make_audio.py` — renders the hymn to audio (`Cantique_instrumental.mp3`): choir +
   pipe organ layers from the GeneralUser GS soundfont (auto-downloaded),
   with phrasing, ritardando, and hall reverb.
-- `Cantique.mp3` — generated audio rendition (all 3 verses)
+- `Cantique_instrumental.mp3` — generated audio rendition (all 3 verses)
 - `gen_sung_musicxml.py` / `Cantique_sung.musicxml` — "singing edition":
   all 3 verses written out, four single-voice parts each carrying its own
   lyric line with melismas — the layout AI singing synthesizers expect
@@ -38,7 +38,7 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
 Real French singing voices sampled from real singers.
 `gen_isis_scores.py` writes hand-phonetized X-SAMPA score files
 (`Cantique_*.isis.cfg`, liaisons included); `make_isis_audio.py` renders
-S=EL, A=MS, T/B=RT and mixes into `Cantique_sung_isis.mp3`.
+S=EL, A=MS, T/B=RT and mixes into `Cantique_sung.mp3`.
 
     python3 gen_isis_scores.py && python3 make_isis_audio.py
 
