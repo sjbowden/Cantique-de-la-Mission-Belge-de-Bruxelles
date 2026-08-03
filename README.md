@@ -34,26 +34,38 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
     pip install tinysoundfont mido numpy   # plus ffmpeg on the system
     python3 make_audio.py
 
-## Sung rendition (free/open-source route)
-`gen_sung_midi.py` writes per-voice karaoke MIDIs (Cantique_S/A/T/B.mid);
-`make_sung_audio.py` sings them through eCantorix (espeak + MBROLA French
-diphone voices) and mixes SATB into `Cantique_sung_demo.mp3`.
-
-    sudo apt-get install -y espeak sox libmidi-perl libconfig-tiny-perl \
-        mbrola mbrola-fr1 mbrola-fr4
-    # Math::FFT is not packaged for Ubuntu; build it into ./perl5:
-    #   perl Makefile.PL INSTALL_BASE=$PWD/perl5 && make && make install
-    python3 gen_sung_midi.py && python3 make_sung_audio.py
-
 ## Sung rendition (ISiS — IRCAM Singing Synthesis)
-Much higher quality: real French singing voices. Requires the free ISiS
-distribution + EL/MS/RT voices from the IRCAM Forum, unpacked under
-`./ISiS/` (account-licensed, not committed).
+Real French singing voices sampled from real singers.
 `gen_isis_scores.py` writes hand-phonetized X-SAMPA score files
 (`Cantique_*.isis.cfg`, liaisons included); `make_isis_audio.py` renders
 S=EL, A=MS, T/B=RT and mixes into `Cantique_sung_isis.mp3`.
 
     python3 gen_isis_scores.py && python3 make_isis_audio.py
+
+### Getting ISiS
+ISiS is free of charge for members of the IRCAM Forum (free account):
+
+1. Register at https://forum.ircam.fr/ and open the ISiS project page
+   (https://forum.ircam.fr/projects/detail/isis/).
+2. Download the command-line application for your OS
+   (`ISiS_V1.3.0_Linux_x86_64.tar.bz2` used here) and the three singing
+   voice databases: EL (lyric soprano), MS (mezzo-soprano), RT (tenor) —
+   about 0.7 GB each.
+3. Unpack everything under `./ISiS/` in this repo (the engine folder plus
+   `EL/`, `MS/`, `RT/` voice folders). The directory is gitignored: the
+   software is licensed to your Forum account and must not be
+   redistributed.
+
+### Abandoned attempt: eCantorix (espeak + MBROLA)
+We first tried the fully-open-source route — eCantorix driving espeak
+with MBROLA French diphone voices (per-voice karaoke MIDIs, pitch
+corrected via sox). It worked mechanically (pitches landed within ~20
+cents after cancelling eCantorix's default two-octave transpose and
+working around a pitch-calibration failure with the mb-fr1 voice), but
+the result was judged unlistenable: speech diphones stretched onto held
+notes with no vocal behavior. The scripts were removed in the commit
+that added this note; see git history (`gen_sung_midi.py`,
+`make_sung_audio.py`) if you ever want to revisit.
 
 For commercial-grade quality, import `Cantique_sung.musicxml` into ACE Studio
 (French supported) or MuseScore Studio's Cantai voices (French pending).

@@ -1,12 +1,6 @@
 GeneralUserGS.sf2
 Cantique.wav
 __pycache__/
-ecantorix/
-.ecantorix-cache-*/
-sung_*.wav
-Cantique_sung_demo.wav
-perl5/
-ecantorix_nocache.pl
 ISiS/
 isis_*.wav
 Cantique_sung_isis.wav
