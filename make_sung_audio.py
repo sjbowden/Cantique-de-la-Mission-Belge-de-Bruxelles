@@ -31,6 +31,12 @@ VOICES = [
     ('B', 'mb-fr1', 'fr+m1', 0.95, 0.25),
 ]
 
+# mb-fr1's pitch response to espeak's -p is not monotonic, which breaks
+# eCantorix's binary-search calibration ("CACHE INCONSISTENCY"). Disabling
+# the pitch cache makes it measure and correct every sample individually.
+NOCACHE_CTRL = 'ecantorix_nocache.pl'
+NOCACHE_VOICES = {'mb-fr1'}
+
 
 def have_mbrola(voice):
     if not shutil.which('mbrola'):
@@ -46,11 +52,23 @@ def render_voice(part, voice):
     out = f'sung_{part}.wav'
     cache = f'.ecantorix-cache-{voice.replace("+", "_")}'
     os.makedirs(cache, exist_ok=True)
+    env = dict(os.environ)
+    # Math::FFT isn't packaged for Ubuntu; a local CPAN build lives in ./perl5
+    # (perl Makefile.PL INSTALL_BASE=$PWD/perl5 && make install)
+    local_perl = os.path.abspath('perl5/lib/perl5')
+    if os.path.isdir(local_perl):
+        env['PERL5LIB'] = local_perl + ':' + env.get('PERL5LIB', '')
+    extra = []
+    if voice in NOCACHE_VOICES:
+        with open(NOCACHE_CTRL, 'w') as f:
+            f.write('our $ESPEAK_PITCH_CACHE = 0;\nour $ESPEAK_ATTEMPTS = 3;\n1;\n')
+        extra = ['-C', os.path.abspath(NOCACHE_CTRL)]   # 'do' needs a full path
     subprocess.run(
         ['perl', os.path.join(ECANTORIX, 'ecantorix.pl'),
          '-v', voice, '-r', str(SR), '-c', cache,
-         '-O', 'wav', '-o', out, f'Cantique_{part}.mid'],
-        check=True)
+         '-t', '24'] + extra +      # cancel eCantorix's default -24 transpose
+        ['-O', 'wav', '-o', out, f'Cantique_{part}.mid'],
+        check=True, env=env)
     return out
 
 

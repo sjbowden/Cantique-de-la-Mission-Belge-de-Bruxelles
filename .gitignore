@@ -5,3 +5,6 @@ ecantorix/
 .ecantorix-cache-*/
 sung_*.wav
 Cantique_sung_demo.wav
+perl5/
+ecantorix_nocache.pl
+ISiS/

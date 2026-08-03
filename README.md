@@ -34,6 +34,20 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
     pip install tinysoundfont mido numpy   # plus ffmpeg on the system
     python3 make_audio.py
 
+## Sung rendition (free/open-source route)
+`gen_sung_midi.py` writes per-voice karaoke MIDIs (Cantique_S/A/T/B.mid);
+`make_sung_audio.py` sings them through eCantorix (espeak + MBROLA French
+diphone voices) and mixes SATB into `Cantique_sung_demo.mp3`.
+
+    sudo apt-get install -y espeak sox libmidi-perl libconfig-tiny-perl \
+        mbrola mbrola-fr1 mbrola-fr4
+    # Math::FFT is not packaged for Ubuntu; build it into ./perl5:
+    #   perl Makefile.PL INSTALL_BASE=$PWD/perl5 && make && make install
+    python3 gen_sung_midi.py && python3 make_sung_audio.py
+
+For higher quality, import `Cantique_sung.musicxml` into ACE Studio
+(French supported) or MuseScore Studio's Cantai voices (French pending).
+
 ## Editorial notes
 Lyrics were normalized from the engraving: es-prit, très, sans, grâce,
 Al-lons!, hon-nêtes, l'É-van-gi-le, Sœur; syllable splits corrected to sung
