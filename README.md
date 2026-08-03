@@ -45,7 +45,17 @@ diphone voices) and mixes SATB into `Cantique_sung_demo.mp3`.
     #   perl Makefile.PL INSTALL_BASE=$PWD/perl5 && make && make install
     python3 gen_sung_midi.py && python3 make_sung_audio.py
 
-For higher quality, import `Cantique_sung.musicxml` into ACE Studio
+## Sung rendition (ISiS — IRCAM Singing Synthesis)
+Much higher quality: real French singing voices. Requires the free ISiS
+distribution + EL/MS/RT voices from the IRCAM Forum, unpacked under
+`./ISiS/` (account-licensed, not committed).
+`gen_isis_scores.py` writes hand-phonetized X-SAMPA score files
+(`Cantique_*.isis.cfg`, liaisons included); `make_isis_audio.py` renders
+S=EL, A=MS, T/B=RT and mixes into `Cantique_sung_isis.mp3`.
+
+    python3 gen_isis_scores.py && python3 make_isis_audio.py
+
+For commercial-grade quality, import `Cantique_sung.musicxml` into ACE Studio
 (French supported) or MuseScore Studio's Cantai voices (French pending).
 
 ## Editorial notes
