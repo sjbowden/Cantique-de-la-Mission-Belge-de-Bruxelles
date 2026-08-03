@@ -78,13 +78,13 @@ def main():
     mix = mix + 0.30 * wet
     mix *= 0.89 / np.abs(mix).max()
 
-    with wave.open('Cantique_sung_isis.wav', 'wb') as w:
+    with wave.open('Cantique_sung.wav', 'wb') as w:
         w.setnchannels(2)
         w.setsampwidth(2)
         w.setframerate(SR)
         w.writeframes((mix * 32767).astype('<i2').tobytes())
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error',
-                    '-i', 'Cantique_sung_isis.wav',
+                    '-i', 'Cantique_sung.wav',
                     '-codec:a', 'libmp3lame', '-q:a', '2', MP3], check=True)
     print('wrote', MP3)
 
