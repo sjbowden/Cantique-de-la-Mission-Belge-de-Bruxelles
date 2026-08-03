@@ -20,6 +20,15 @@ Lynne Matthews) transcribed from the scanned sheet `IMG_1845.JPG`.
     python3 gen_musicxml.py
     python3 make_pdf.py
 
+- `make_audio.py` — renders the hymn to audio (`Cantique.mp3`): choir +
+  pipe organ layers from the GeneralUser GS soundfont (auto-downloaded),
+  with phrasing, ritardando, and hall reverb.
+- `Cantique.mp3` — generated audio rendition
+
+## Audio rebuild
+    pip install tinysoundfont mido numpy   # plus ffmpeg on the system
+    python3 make_audio.py
+
 ## Editorial notes
 Lyrics were normalized from the engraving: es-prit, très, sans, grâce,
 Al-lons!, hon-nêtes, l'É-van-gi-le, Sœur; syllable splits corrected to sung
