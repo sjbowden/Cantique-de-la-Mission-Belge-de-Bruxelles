@@ -1,10 +1,10 @@
 # Cantique de la Mission Belge de Bruxelles
 
 SATB hymn (Elder Matthew King; arr. Elder Robert Nakea, 1983; lyrics Sœur
-Lynne Matthews) transcribed from the scanned sheet `IMG_1845.JPG`.
+Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
 
 ## Files
-- `IMG_1845.JPG` — source photo of the printed hymn
+- `Cantique_original_scan.jpg` — source photo of the printed hymn
 - `gen_musicxml.py` — the transcription itself: note tables (S/A/T/B per
   measure), all 3 verses of lyrics, and the MusicXML writer. Edit this to
   change any note or syllable, then re-run.
@@ -23,7 +23,12 @@ Lynne Matthews) transcribed from the scanned sheet `IMG_1845.JPG`.
 - `make_audio.py` — renders the hymn to audio (`Cantique.mp3`): choir +
   pipe organ layers from the GeneralUser GS soundfont (auto-downloaded),
   with phrasing, ritardando, and hall reverb.
-- `Cantique.mp3` — generated audio rendition
+- `Cantique.mp3` — generated audio rendition (all 3 verses)
+- `gen_sung_musicxml.py` / `Cantique_sung.musicxml` — "singing edition":
+  all 3 verses written out, four single-voice parts each carrying its own
+  lyric line with melismas — the layout AI singing synthesizers expect
+  (ACE Studio supports French today; MuseScore Studio's Cantai has French
+  in development).
 
 ## Audio rebuild
     pip install tinysoundfont mido numpy   # plus ffmpeg on the system

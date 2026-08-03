@@ -27,7 +27,9 @@ MP3 = 'Cantique.mp3'
 SR = 44100
 BPM = 104                      # sturdy hymn tempo
 DIV = 2                        # table divisions per quarter note
-TOTAL_DIVS = 2 + 8 * 15 + 6    # pickup + 15 full measures + final dotted half
+VERSES = 3
+VERSE_DIVS = 2 + 8 * 15 + 6    # pickup + 15 full measures + final dotted half
+TOTAL_DIVS = VERSE_DIVS * VERSES   # strophic: m17 (3 beats) + next pickup (1) = full bar
 
 SEMITONE = {'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11}
 
@@ -40,7 +42,7 @@ def midi_pitch(p):
 # --- tempo map: steady, easing ~30% over the last full measure, final chord held
 def build_time_map():
     base = 60.0 / BPM / DIV
-    rit_start, rit_end = TOTAL_DIVS - 14, TOTAL_DIVS - 6   # measure 16
+    rit_start, rit_end = TOTAL_DIVS - 14, TOTAL_DIVS - 6   # last verse, measure 16
     cum, t = [0.0], 0.0
     for d in range(TOTAL_DIVS):
         f = 1.0
@@ -77,19 +79,30 @@ def main():
     CHOIR, ORGAN = 52, 19       # GM: Choir Aahs, Church Organ
     GAP = 0.035                 # re-articulation gap between notes (seconds)
 
+    # per-verse dynamics: v1 mf, v2 a shade lighter, v3 full
+    verse_delta = {0: 0, 1: -7, 2: 4}
+    breath = 0.10               # extra lift before each verse's pickup
+
     events = []                 # (time, 'on'/'off', channel, key, velocity)
-    for vi, (table, vel) in enumerate(voices):
-        for start, dur, key, downbeat in voice_events(table):
-            t0 = cum[start] + float(rng.uniform(0.0, 0.010))
-            t1 = cum[start + dur] - (0.0 if start + dur == TOTAL_DIVS else GAP)
-            v = min(112, vel + (6 if downbeat else 0) + int(rng.integers(-4, 5)))
-            events.append((t0, 'on', vi, key, v))            # choir
-            events.append((t1, 'off', vi, key, 0))
-            events.append((t0, 'on', vi + 4, key, int(v * 0.55)))   # organ 8'
-            events.append((t1, 'off', vi + 4, key, 0))
-            if vi == 3:                                      # organ 16' pedal
-                events.append((t0, 'on', 8, key - 12, int(v * 0.40)))
-                events.append((t1, 'off', 8, key - 12, 0))
+    for verse in range(VERSES):
+        offs = verse * VERSE_DIVS
+        for vi, (table, vel) in enumerate(voices):
+            for start, dur, key, downbeat in voice_events(table):
+                s, e = start + offs, start + dur + offs
+                t0 = cum[s] + float(rng.uniform(0.0, 0.010))
+                gap = GAP
+                if e % VERSE_DIVS == 0 and e != TOTAL_DIVS:
+                    gap = breath                             # breath before next verse
+                t1 = cum[e] - (0.0 if e == TOTAL_DIVS else gap)
+                v = min(112, vel + verse_delta[verse]
+                        + (6 if downbeat else 0) + int(rng.integers(-4, 5)))
+                events.append((t0, 'on', vi, key, v))        # choir
+                events.append((t1, 'off', vi, key, 0))
+                events.append((t0, 'on', vi + 4, key, int(v * 0.55)))   # organ 8'
+                events.append((t1, 'off', vi + 4, key, 0))
+                if vi == 3:                                  # organ 16' pedal
+                    events.append((t0, 'on', 8, key - 12, int(v * 0.40)))
+                    events.append((t1, 'off', 8, key - 12, 0))
     events.sort(key=lambda e: e[0])
 
     synth = tinysoundfont.Synth(gain=-3.0)
