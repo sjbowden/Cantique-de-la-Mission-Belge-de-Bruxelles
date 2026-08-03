@@ -1,3 +1,7 @@
 GeneralUserGS.sf2
 Cantique.wav
 __pycache__/
+ecantorix/
+.ecantorix-cache-*/
+sung_*.wav
+Cantique_sung_demo.wav
