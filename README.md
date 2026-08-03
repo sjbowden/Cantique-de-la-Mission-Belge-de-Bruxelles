@@ -3,6 +3,15 @@
 SATB hymn (Elder Matthew King; arr. Elder Robert Nakea, 1983; lyrics Sœur
 Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
 
+## ⭐ The good stuff
+| | |
+|---|---|
+| 🎼 [**Printable sheet music (PDF)**](Cantique_de_la_Mission_Belge_de_Bruxelles.pdf) | one page, US Letter, all 3 verses |
+| 🎹 [**Instrumental recording (MP3)**](Cantique_instrumental.mp3) | choir "aahs" + pipe organ, 3 verses |
+| 🎤 [**Sung recording (MP3)**](Cantique_sung.mp3) | four synthesized French voices singing the lyrics |
+
+(Also available as downloads on the [Releases page](../../releases).)
+
 ## Files
 - `Cantique_original_scan.jpg` — source photo of the printed hymn
 - `gen_musicxml.py` — the transcription itself: note tables (S/A/T/B per
