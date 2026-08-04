@@ -30,6 +30,13 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
 - `Cantique_preview.png` — generated preview image
 
 ## Rebuild
+The simplest way (creates a local `.venv` automatically, builds score,
+PDFs, preview, instrumental MP3, singing edition, and ISiS score files):
+
+    make            # or: make sung / make everything / make clean / make distclean
+
+Or by hand:
+
     pip install verovio cairosvg
     python3 gen_musicxml.py
     python3 make_pdf.py

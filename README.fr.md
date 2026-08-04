@@ -31,6 +31,14 @@ Sœur Lynne Matthews), transcrit à partir de la partition numérisée
 - `Cantique_preview.png` — image d'aperçu générée
 
 ## Regénérer
+Le plus simple (crée automatiquement un `.venv` local, puis produit la
+partition, les PDF, l'aperçu, le MP3 instrumental, l'édition chantée et
+les partitions ISiS) :
+
+    make            # ou : make sung / make everything / make clean / make distclean
+
+Ou à la main :
+
     pip install verovio cairosvg
     python3 gen_musicxml.py
     python3 make_pdf.py

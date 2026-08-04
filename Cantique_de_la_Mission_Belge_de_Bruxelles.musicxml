@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-<score-partwise version="4.0">
-  <work><work-title>Cantique de la Mission Belge de Bruxelles</work-title></work>
-  <identification>
-    <creator type="composer">Elder Matthew King</creator>
-    <creator type="arranger">Arranged by Elder Robert Nakea (1983)</creator>
-    <creator type="lyricist">Sœur Lynne Matthews</creator>
-    <encoding><software>Transcribed from scanned image</software></encoding>
-  </identification>
-  <credit page="1"><credit-type>title</credit-type>
-    <credit-words default-x="595" default-y="1550" justify="center" valign="top" font-weight="bold" font-size="60">Cantique de la Mission Belge de Bruxelles</credit-words></credit>
-  <credit page="1"><credit-type>lyricist</credit-type>
-    <credit-words default-x="85" default-y="1450" justify="left" valign="top" font-size="10">Sœur Lynne Matthews</credit-words></credit>
-  <credit page="1"><credit-type>composer</credit-type>
-    <credit-words default-x="1105" default-y="1470" justify="right" valign="top" font-size="10">Elder Matthew King</credit-words></credit>
-  <credit page="1"><credit-type>arranger</credit-type>
-    <credit-words default-x="1105" default-y="1440" justify="right" valign="top" font-size="10">Arranged by Elder Robert Nakea (1983)</credit-words></credit>
-  <part-list>
-    <part-group type="start" number="1">
-      <group-symbol>brace</group-symbol>
-      <group-barline>no</group-barline>
-    </part-group>
-    <score-part id="P1"><part-name></part-name></score-part>
-    <score-part id="P2"><part-name></part-name></score-part>
-    <part-group type="stop" number="1"/>
-  </part-list>
-  <part id="P1">
-<measure number="1" implicit="yes">
+    <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+    <score-partwise version="4.0">
+      <work><work-title>Cantique de la Mission Belge de Bruxelles</work-title></work>
+      <identification>
+        <creator type="composer">Elder Matthew King</creator>
+        <creator type="arranger">Arranged by Elder Robert Nakea (1983)</creator>
+        <creator type="lyricist">Sœur Lynne Matthews</creator>
+        <encoding><software>Transcribed from scanned image</software></encoding>
+      </identification>
+      <credit page="1"><credit-type>title</credit-type>
+        <credit-words default-x="595" default-y="1550" justify="center" valign="top" font-weight="bold" font-size="60">Cantique de la Mission Belge de Bruxelles</credit-words></credit>
+      <credit page="1"><credit-type>lyricist</credit-type>
+        <credit-words default-x="85" default-y="1450" justify="left" valign="top" font-size="10">Sœur Lynne Matthews</credit-words></credit>
+      <credit page="1"><credit-type>composer</credit-type>
+        <credit-words default-x="1105" default-y="1470" justify="right" valign="top" font-size="10">Elder Matthew King</credit-words></credit>
+      <credit page="1"><credit-type>arranger</credit-type>
+        <credit-words default-x="1105" default-y="1440" justify="right" valign="top" font-size="10">Arranged by Elder Robert Nakea (1983)</credit-words></credit>
+      <part-list>
+        <part-group type="start" number="1">
+          <group-symbol>brace</group-symbol>
+          <group-barline>no</group-barline>
+        </part-group>
+        <score-part id="P1"><part-name></part-name></score-part>
+        <score-part id="P2"><part-name></part-name></score-part>
+        <part-group type="stop" number="1"/>
+      </part-list>
+      <part id="P1">
+    <measure number="1" implicit="yes">
 <attributes><divisions>2</divisions><key><fifths>-3</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>
 <note>
 <pitch><step>E</step><alter>-1</alter><octave>4</octave></pitch>
@@ -1343,9 +1343,9 @@
 <staff>1</staff>
 </note><barline location="right"><bar-style>light-heavy</bar-style></barline>
 </measure>
-  </part>
-  <part id="P2">
-<measure number="1" implicit="yes">
+      </part>
+      <part id="P2">
+    <measure number="1" implicit="yes">
 <attributes><divisions>2</divisions><key><fifths>-3</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>F</sign><line>4</line></clef></attributes>
 <note>
 <pitch><step>E</step><alter>-1</alter><octave>4</octave></pitch>
@@ -2468,5 +2468,6 @@
 <staff>1</staff>
 </note><barline location="right"><bar-style>light-heavy</bar-style></barline>
 </measure>
-  </part>
-</score-partwise>
+      </part>
+    </score-partwise>
+    

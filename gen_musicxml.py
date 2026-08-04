@@ -207,53 +207,54 @@ def build_part(upper, lower, clef_sign, clef_line, with_lyrics):
                         '\n'.join(body) + barline + '\n</measure>')
     return chr(10).join(measures)
 
-part1 = build_part(S, A, 'G', 2, with_lyrics=True)
-part2 = build_part(T, B, 'F', 4, with_lyrics=False)
+if __name__ == '__main__':
+    part1 = build_part(S, A, 'G', 2, with_lyrics=True)
+    part2 = build_part(T, B, 'F', 4, with_lyrics=False)
 
-xml = f'''<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-<score-partwise version="4.0">
-  <work><work-title>Cantique de la Mission Belge de Bruxelles</work-title></work>
-  <identification>
-    <creator type="composer">Elder Matthew King</creator>
-    <creator type="arranger">Arranged by Elder Robert Nakea (1983)</creator>
-    <creator type="lyricist">Sœur Lynne Matthews</creator>
-    <encoding><software>Transcribed from scanned image</software></encoding>
-  </identification>
-  <credit page="1"><credit-type>title</credit-type>
-    <credit-words default-x="595" default-y="1550" justify="center" valign="top" font-weight="bold" font-size="60">Cantique de la Mission Belge de Bruxelles</credit-words></credit>
-  <credit page="1"><credit-type>lyricist</credit-type>
-    <credit-words default-x="85" default-y="1450" justify="left" valign="top" font-size="10">Sœur Lynne Matthews</credit-words></credit>
-  <credit page="1"><credit-type>composer</credit-type>
-    <credit-words default-x="1105" default-y="1470" justify="right" valign="top" font-size="10">Elder Matthew King</credit-words></credit>
-  <credit page="1"><credit-type>arranger</credit-type>
-    <credit-words default-x="1105" default-y="1440" justify="right" valign="top" font-size="10">Arranged by Elder Robert Nakea (1983)</credit-words></credit>
-  <part-list>
-    <part-group type="start" number="1">
-      <group-symbol>brace</group-symbol>
-      <group-barline>no</group-barline>
-    </part-group>
-    <score-part id="P1"><part-name></part-name></score-part>
-    <score-part id="P2"><part-name></part-name></score-part>
-    <part-group type="stop" number="1"/>
-  </part-list>
-  <part id="P1">
-{part1}
-  </part>
-  <part id="P2">
-{part2}
-  </part>
-</score-partwise>
-'''
-import os
-_here = os.path.dirname(os.path.abspath(__file__))
-open(os.path.join(_here, 'Cantique_de_la_Mission_Belge_de_Bruxelles.musicxml'),
-     'w').write(xml)
+    xml = f'''<?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+    <score-partwise version="4.0">
+      <work><work-title>Cantique de la Mission Belge de Bruxelles</work-title></work>
+      <identification>
+        <creator type="composer">Elder Matthew King</creator>
+        <creator type="arranger">Arranged by Elder Robert Nakea (1983)</creator>
+        <creator type="lyricist">Sœur Lynne Matthews</creator>
+        <encoding><software>Transcribed from scanned image</software></encoding>
+      </identification>
+      <credit page="1"><credit-type>title</credit-type>
+        <credit-words default-x="595" default-y="1550" justify="center" valign="top" font-weight="bold" font-size="60">Cantique de la Mission Belge de Bruxelles</credit-words></credit>
+      <credit page="1"><credit-type>lyricist</credit-type>
+        <credit-words default-x="85" default-y="1450" justify="left" valign="top" font-size="10">Sœur Lynne Matthews</credit-words></credit>
+      <credit page="1"><credit-type>composer</credit-type>
+        <credit-words default-x="1105" default-y="1470" justify="right" valign="top" font-size="10">Elder Matthew King</credit-words></credit>
+      <credit page="1"><credit-type>arranger</credit-type>
+        <credit-words default-x="1105" default-y="1440" justify="right" valign="top" font-size="10">Arranged by Elder Robert Nakea (1983)</credit-words></credit>
+      <part-list>
+        <part-group type="start" number="1">
+          <group-symbol>brace</group-symbol>
+          <group-barline>no</group-barline>
+        </part-group>
+        <score-part id="P1"><part-name></part-name></score-part>
+        <score-part id="P2"><part-name></part-name></score-part>
+        <part-group type="stop" number="1"/>
+      </part-list>
+      <part id="P1">
+    {part1}
+      </part>
+      <part id="P2">
+    {part2}
+      </part>
+    </score-partwise>
+    '''
+    import os
+    _here = os.path.dirname(os.path.abspath(__file__))
+    open(os.path.join(_here, 'Cantique_de_la_Mission_Belge_de_Bruxelles.musicxml'),
+         'w').write(xml)
 
-# validation: per-voice duration sums
-for mn in range(1,18):
-    lens = {v: sum(d for _,d in V[mn]) for v,V in [('S',S),('A',A),('T',T),('B',B)]}
-    assert len(set(lens.values()))==1, (mn,lens)
-    assert len(LYR[mn]) == len(S[mn]), ('lyr', mn, len(LYR[mn]), len(S[mn]))
-    for i,l in enumerate(LYR[mn]): assert len(l)==3, ('verses', mn, i)
-print('OK: durations consistent, lyrics aligned;', sum(len(v) for v in S.values()), 'soprano notes')
+    # validation: per-voice duration sums
+    for mn in range(1,18):
+        lens = {v: sum(d for _,d in V[mn]) for v,V in [('S',S),('A',A),('T',T),('B',B)]}
+        assert len(set(lens.values()))==1, (mn,lens)
+        assert len(LYR[mn]) == len(S[mn]), ('lyr', mn, len(LYR[mn]), len(S[mn]))
+        for i,l in enumerate(LYR[mn]): assert len(l)==3, ('verses', mn, i)
+    print('OK: durations consistent, lyrics aligned;', sum(len(v) for v in S.values()), 'soprano notes')
