@@ -55,6 +55,18 @@ $(SUNG_MP3) &: make_isis_audio.py $(ISISCFGS)
 	@test -d ISiS || { echo 'ISiS not installed - see README "Getting ISiS"'; exit 1; }
 	$(PY) make_isis_audio.py
 
+# ISiS bundles Intel MKL without its generic CPU kernel (libmkl_def.so).
+# CPUs that MKL dispatches to that kernel (notably AMD) crash with
+# "Cannot load libmkl_def.so". The bundled kernels are interchangeable
+# dispatch targets, so point the missing ones at the AVX2 versions
+# (any modern AMD CPU has AVX2).
+.PHONY: isis-mkl-fix
+isis-mkl-fix:
+	cd ISiS/ISiS_V*/ISiS/_internal && \
+	  ln -sf libmkl_avx2.so libmkl_def.so && \
+	  ln -sf libmkl_vml_avx2.so libmkl_vml_def.so
+	@echo "MKL def kernels linked to AVX2 - retry: make sung"
+
 # --- cleaning --------------------------------------------------------------
 clean:
 	rm -f Cantique_instrumental.wav Cantique_sung.wav Cantique_sung_no_bass.wav

@@ -90,6 +90,16 @@ ISiS is free of charge for members of the IRCAM Forum (free account):
    software is licensed to your Forum account and must not be
    redistributed.
 
+### Troubleshooting: "Intel MKL FATAL ERROR: Cannot load libmkl_def.so"
+The ISiS bundle omits MKL's generic CPU kernel; processors that MKL
+dispatches there (notably AMD) crash during synthesis. Fix with
+
+    make isis-mkl-fix
+
+which links the missing `libmkl_def.so` / `libmkl_vml_def.so` to the
+bundled AVX2 kernels (equivalent dispatch targets; any modern AMD CPU
+has AVX2).
+
 ### Abandoned attempt: eCantorix (espeak + MBROLA)
 We first tried the fully-open-source route — eCantorix driving espeak
 with MBROLA French diphone voices (per-voice karaoke MIDIs, pitch

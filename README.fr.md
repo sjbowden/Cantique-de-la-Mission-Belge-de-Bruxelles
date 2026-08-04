@@ -93,6 +93,16 @@ ISiS est gratuit pour les membres du Forum IRCAM (compte gratuit) :
    git : le logiciel est licencié à votre compte Forum et ne doit pas être
    redistribué.
 
+### Dépannage : « Intel MKL FATAL ERROR: Cannot load libmkl_def.so »
+Le paquet ISiS omet le noyau CPU générique de MKL ; les processeurs que
+MKL y dirige (notamment AMD) plantent pendant la synthèse. Correction :
+
+    make isis-mkl-fix
+
+qui fait pointer les `libmkl_def.so` / `libmkl_vml_def.so` manquants
+vers les noyaux AVX2 fournis (cibles équivalentes ; tout processeur AMD
+moderne a AVX2).
+
 ### Tentative abandonnée : eCantorix (espeak + MBROLA)
 Nous avons d'abord essayé la voie entièrement libre — eCantorix pilotant
 espeak avec les voix de diphones français MBROLA (fichiers MIDI karaoké par
