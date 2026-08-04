@@ -90,9 +90,18 @@ ISiS is free of charge for members of the IRCAM Forum (free account):
    software is licensed to your Forum account and must not be
    redistributed.
 
-### Troubleshooting: "Intel MKL FATAL ERROR: Cannot load libmkl_def.so"
-The ISiS bundle omits MKL's generic CPU kernel; processors that MKL
-dispatches there (notably AMD) crash during synthesis. Fix with
+### Troubleshooting: MKL errors on non-Intel CPUs
+On AMD (and other non-Intel) processors, ISiS synthesis dies with
+
+    Intel MKL FATAL ERROR: Cannot load libmkl_def.so.
+
+or, if a substitute kernel is offered under that name,
+
+    Intel MKL WARNING: Library libmkl_def.so (MKL type 5) is not
+    suitable for this processor (MKL type 0).
+
+The ISiS bundle omits MKL's generic CPU kernel, and this MKL routes all
+non-Intel processors to it. Fix with
 
     make isis-mkl-fix
 
