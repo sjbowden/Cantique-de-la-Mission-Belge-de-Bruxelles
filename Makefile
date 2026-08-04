@@ -29,7 +29,8 @@ everything: all sung
 sung: $(SUNG_MP3)
 
 # --- environment -----------------------------------------------------------
-.venv/.stamp:
+# depends on the Makefile so edits to the package list re-provision the venv
+.venv/.stamp: Makefile
 	python3 -m venv .venv
 	$(PIP) install verovio cairosvg pikepdf mido numpy
 	$(PIP) install --no-deps tinysoundfont  # its pyaudio dep is playback-only
