@@ -39,7 +39,7 @@ les partitions ISiS) :
 
 Ou à la main :
 
-    pip install verovio cairosvg
+    pip install verovio cairosvg pikepdf
     python3 gen_musicxml.py
     python3 make_pdf.py
 
@@ -48,7 +48,7 @@ projet (recommandé sur les distributions dont le Python système est géré en
 externe) :
 
     python3 -m venv .venv
-    .venv/bin/pip install verovio cairosvg mido numpy
+    .venv/bin/pip install verovio cairosvg pikepdf mido numpy
     .venv/bin/pip install --no-deps tinysoundfont   # sa dépendance pyaudio ne sert qu'à la lecture en direct
     .venv/bin/python gen_musicxml.py && .venv/bin/python make_pdf.py
 
@@ -107,6 +107,18 @@ l'historique git (`gen_sung_midi.py`, `make_sung_audio.py`) pour y revenir.
 Pour une qualité professionnelle, importer `Cantique_sung.musicxml` dans
 ACE Studio (français pris en charge) ou dans les voix Cantai de MuseScore
 Studio (français en cours de développement).
+
+## Reproductibilité
+Les regénérations sont identiques à l'octet près sur une même machine
+(identifiants XML de Verovio initialisés par une graine ; PDF normalisés
+avec pikepdf, dates supprimées). Sur une machine *différente*, les PDF
+et MP3 regénérés peuvent différer octet par octet tout en ayant un
+contenu identique — les polices incorporées et la version de l'encodeur
+LAME varient d'un système à l'autre. Si `git status` montre des fichiers
+générés comme modifiés après une compilation sans changement des
+sources, faites simplement `git restore` ; ne validez des sorties
+regénérées que si la musique, les paroles ou le rendu ont réellement
+changé.
 
 ## Notes éditoriales
 Les paroles ont été normalisées par rapport à la gravure : es-prit, très,

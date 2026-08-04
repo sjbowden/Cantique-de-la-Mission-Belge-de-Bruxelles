@@ -37,7 +37,7 @@ PDFs, preview, instrumental MP3, singing edition, and ISiS score files):
 
 Or by hand:
 
-    pip install verovio cairosvg
+    pip install verovio cairosvg pikepdf
     python3 gen_musicxml.py
     python3 make_pdf.py
 
@@ -45,7 +45,7 @@ Alternatively, keep everything in a project-local virtual environment
 (recommended on distros whose system Python is externally managed):
 
     python3 -m venv .venv
-    .venv/bin/pip install verovio cairosvg mido numpy
+    .venv/bin/pip install verovio cairosvg pikepdf mido numpy
     .venv/bin/pip install --no-deps tinysoundfont   # its pyaudio dep is only for live playback
     .venv/bin/python gen_musicxml.py && .venv/bin/python make_pdf.py
 
@@ -103,6 +103,16 @@ that added this note; see git history (`gen_sung_midi.py`,
 
 For commercial-grade quality, import `Cantique_sung.musicxml` into ACE Studio
 (French supported) or MuseScore Studio's Cantai voices (French pending).
+
+## Reproducibility
+Rebuilds are byte-identical on the same machine (Verovio's XML IDs are
+seeded; the PDFs are normalized with pikepdf, dates stripped). On a
+*different* machine, rebuilt PDFs and MP3s may differ byte-wise while
+being content-identical — embedded font files and the LAME encoder
+version vary between systems. If `git status` shows generated outputs
+as modified after a build and you didn't change any source, just
+`git restore` them; only commit refreshed outputs when the music,
+lyrics, or rendering actually changed.
 
 ## Editorial notes
 Lyrics were normalized from the engraving: es-prit, très, sans, grâce,

@@ -6,8 +6,9 @@ Usage:     python3 gen_musicxml.py && python3 make_pdf.py
 """
 import re
 
-import verovio
 import cairosvg
+import pikepdf
+import verovio
 
 XML = 'Cantique_de_la_Mission_Belge_de_Bruxelles.musicxml'
 PDF = 'Cantique_de_la_Mission_Belge_de_Bruxelles.pdf'
@@ -24,7 +25,6 @@ FORMATS = [
 
 def render_page(page_w, page_h):
     tk = verovio.toolkit()
-    tk.loadFile(XML)
     tk.setOptions({
         'pageWidth': page_w, 'pageHeight': page_h,
         'pageMarginLeft': 120, 'pageMarginRight': 120,
@@ -36,8 +36,9 @@ def render_page(page_w, page_h):
         'footer': 'none',           # no 'engraved with Verovio' footer
         'lyricSize': 4.2,
         'spacingStaff': 7, 'spacingSystem': 10,
+        'xmlIdSeed': 42,            # deterministic SVG ids -> reproducible output
     })
-    tk.redoLayout()
+    tk.loadFile(XML)            # load after options so the ID seed applies
     assert tk.getPageCount() == 1, 'layout no longer fits one page'
     return tk.renderToSVG(1)
 
@@ -74,6 +75,12 @@ for pdf, pw, ph, out_w, out_h in FORMATS:
     svg = style_header(render_page(pw, ph))
     cairosvg.svg2pdf(bytestring=svg.encode(), write_to=pdf,
                      output_width=out_w, output_height=out_h)
+    # cairo's flate chunking is nondeterministic; rewrite deterministically
+    with pikepdf.open(pdf, allow_overwriting_input=True) as p:
+        for key in ('/CreationDate', '/ModDate'):
+            if key in p.docinfo:
+                del p.docinfo[key]
+        p.save(pdf, deterministic_id=True, recompress_flate=True)
     if pdf == PDF:                  # the Letter render doubles as the preview
         open(SVG, 'w').write(svg)
         cairosvg.svg2png(bytestring=svg.encode(), write_to=PNG,

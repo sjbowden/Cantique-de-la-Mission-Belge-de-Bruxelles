@@ -31,7 +31,7 @@ sung: $(SUNG_MP3)
 # --- environment -----------------------------------------------------------
 .venv/.stamp:
 	python3 -m venv .venv
-	$(PIP) install verovio cairosvg mido numpy
+	$(PIP) install verovio cairosvg pikepdf mido numpy
 	$(PIP) install --no-deps tinysoundfont  # its pyaudio dep is playback-only
 	touch $@
 
