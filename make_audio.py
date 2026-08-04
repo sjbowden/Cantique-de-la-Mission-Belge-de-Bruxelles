@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the hymn to audio with sampled instruments (choir + pipe organ).
+"""Render the hymn to audio with a sampled pipe organ.
 
 Builds the performance directly from the note tables in gen_musicxml.py,
 renders it through a General MIDI soundfont, and applies a convolution
@@ -73,10 +73,10 @@ def main():
     cum = build_time_map()
     rng = np.random.default_rng(7)
 
-    # (table, choir velocity): soprano leads, bass firm, inner voices blended
+    # (table, velocity): soprano leads, bass firm, inner voices blended
     voices = [(score.S, 92), (score.A, 78), (score.T, 78), (score.B, 86)]
 
-    CHOIR, ORGAN = 52, 19       # GM: Choir Aahs, Church Organ
+    ORGAN = 19                  # GM: Church Organ
     GAP = 0.035                 # re-articulation gap between notes (seconds)
 
     # per-verse dynamics: v1 mf, v2 a shade lighter, v3 full
@@ -96,20 +96,17 @@ def main():
                 t1 = cum[e] - (0.0 if e == TOTAL_DIVS else gap)
                 v = min(112, vel + verse_delta[verse]
                         + (6 if downbeat else 0) + int(rng.integers(-4, 5)))
-                events.append((t0, 'on', vi, key, v))        # choir
+                events.append((t0, 'on', vi, key, v))        # organ 8'
                 events.append((t1, 'off', vi, key, 0))
-                events.append((t0, 'on', vi + 4, key, int(v * 0.55)))   # organ 8'
-                events.append((t1, 'off', vi + 4, key, 0))
                 if vi == 3:                                  # organ 16' pedal
-                    events.append((t0, 'on', 8, key - 12, int(v * 0.40)))
+                    events.append((t0, 'on', 8, key - 12, int(v * 0.55)))
                     events.append((t1, 'off', 8, key - 12, 0))
     events.sort(key=lambda e: e[0])
 
     synth = tinysoundfont.Synth(gain=-3.0)
     sfid = synth.sfload(SF2)
     for ch in range(4):
-        synth.program_select(ch, sfid, 0, CHOIR)
-        synth.program_select(ch + 4, sfid, 0, ORGAN)
+        synth.program_select(ch, sfid, 0, ORGAN)
     synth.program_select(8, sfid, 0, ORGAN)
 
     tail = 3.0                  # reverb tail after the release

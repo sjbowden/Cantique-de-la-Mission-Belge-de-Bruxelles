@@ -11,7 +11,7 @@ Sœur Lynne Matthews), transcrit à partir de la partition numérisée
 |---|---|
 | 🎼 [**Partition imprimable (PDF, Lettre US)**](Cantique_de_la_Mission_Belge_de_Bruxelles.pdf) | une page, les 3 couplets |
 | 🎼 [**Partition imprimable (PDF, A4)**](Cantique_de_la_Mission_Belge_de_Bruxelles_A4.pdf) | la même, pour papier A4 |
-| 🎹 [**Enregistrement instrumental (MP3)**](Cantique_instrumental.mp3) | chœur « aah » + orgue, 3 couplets |
+| 🎹 [**Enregistrement instrumental (MP3)**](Cantique_instrumental.mp3) | orgue, 3 couplets |
 | 🎤 [**Enregistrement chanté (MP3)**](Cantique_sung.mp3) | quatre voix françaises de synthèse chantent les paroles |
 | 📺 [**Interprétation de Wayne Shelton (YouTube)**](https://www.youtube.com/watch?v=y3b426utLxA) | une interprétation du cantique |
 
@@ -56,8 +56,8 @@ Le répertoire `.venv/` est ignoré par git ; utilisez `.venv/bin/python`
 pour tous les scripts de ce dépôt.
 
 - `make_audio.py` — rend le cantique en audio (`Cantique_instrumental.mp3`) :
-  chœur + orgue superposés à partir de la banque de sons GeneralUser GS
-  (téléchargée automatiquement), avec phrasé, ritardando et réverbération.
+  orgue (avec pédale de 16 pieds) à partir de la banque de sons GeneralUser
+  GS (téléchargée automatiquement), avec phrasé, ritardando et réverbération.
 - `Cantique_instrumental.mp3` — rendu audio généré (les 3 couplets)
 - `gen_sung_musicxml.py` / `Cantique_sung.musicxml` — « édition chantée » :
   les 3 couplets écrits en entier, quatre parties à voix unique portant
