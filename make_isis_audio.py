@@ -40,10 +40,15 @@ MIXES = [
 def render(part, voice):
     out = f'isis_{part}.wav'
     env = dict(os.environ, ISIS_CORPORA=CORPORA)
-    subprocess.run([ISIS, '-m', f'Cantique_{part}.isis.cfg', '-sv', voice,
-                    '--seed', '17', '-o', out],
-                   check=True, env=env,
-                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    r = subprocess.run([ISIS, '-m', f'Cantique_{part}.isis.cfg', '-sv', voice,
+                        '--seed', '17', '-o', out],
+                       env=env, text=True,
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    if r.returncode != 0:
+        tail = '\n'.join(r.stdout.splitlines()[-25:])
+        raise RuntimeError(
+            f'ISiS failed for part {part} (voice {voice}), exit '
+            f'{r.returncode}. Last output:\n{tail}')
     return out
 
 
@@ -76,6 +81,13 @@ def reverb(mix):
 
 
 def main():
+    missing = sorted({v for _, v, _, _ in VOICES
+                      if not os.path.isdir(os.path.join(CORPORA, v))})
+    if missing:
+        raise SystemExit(
+            f'ISiS voice database(s) not found under {CORPORA}: '
+            f'{", ".join(missing)}. Unpack the voice archives there '
+            '(see README "Getting ISiS").')
     tracks = {}
     for part, voice, gain, pan in VOICES:
         print(f'--- ISiS: rendering {part} with {voice}')
