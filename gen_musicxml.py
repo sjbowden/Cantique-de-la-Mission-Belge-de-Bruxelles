@@ -245,7 +245,10 @@ xml = f'''<?xml version="1.0" encoding="UTF-8"?>
   </part>
 </score-partwise>
 '''
-open('/home/sjbowden/hymn/Cantique_de_la_Mission_Belge_de_Bruxelles.musicxml','w').write(xml)
+import os
+_here = os.path.dirname(os.path.abspath(__file__))
+open(os.path.join(_here, 'Cantique_de_la_Mission_Belge_de_Bruxelles.musicxml'),
+     'w').write(xml)
 
 # validation: per-voice duration sums
 for mn in range(1,18):

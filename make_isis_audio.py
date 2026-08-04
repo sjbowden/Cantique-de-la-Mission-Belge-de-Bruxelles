@@ -14,7 +14,10 @@ import wave
 
 import numpy as np
 
-ISIS = 'ISiS/ISiS_V1.3.0_Linux_x86_64/isis.sh'
+import glob
+_isis_hits = sorted(glob.glob('ISiS/ISiS_V*/isis.sh'))
+assert _isis_hits, 'ISiS not found under ./ISiS/ — see README "Getting ISiS"'
+ISIS = _isis_hits[-1]
 CORPORA = os.path.abspath('ISiS')
 SR = 48000                      # ISiS native rate
 
