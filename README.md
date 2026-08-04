@@ -34,6 +34,17 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
     python3 gen_musicxml.py
     python3 make_pdf.py
 
+Alternatively, keep everything in a project-local virtual environment
+(recommended on distros whose system Python is externally managed):
+
+    python3 -m venv .venv
+    .venv/bin/pip install verovio cairosvg mido numpy
+    .venv/bin/pip install --no-deps tinysoundfont   # its pyaudio dep is only for live playback
+    .venv/bin/python gen_musicxml.py && .venv/bin/python make_pdf.py
+
+The `.venv/` directory is gitignored; use `.venv/bin/python` for any of the
+scripts in this repo.
+
 - `make_audio.py` — renders the hymn to audio (`Cantique_instrumental.mp3`): choir +
   pipe organ layers from the GeneralUser GS soundfont (auto-downloaded),
   with phrasing, ritardando, and hall reverb.

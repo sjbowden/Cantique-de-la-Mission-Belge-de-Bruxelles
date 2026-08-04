@@ -35,6 +35,18 @@ Sœur Lynne Matthews), transcrit à partir de la partition numérisée
     python3 gen_musicxml.py
     python3 make_pdf.py
 
+Autre possibilité : tout installer dans un environnement virtuel local au
+projet (recommandé sur les distributions dont le Python système est géré en
+externe) :
+
+    python3 -m venv .venv
+    .venv/bin/pip install verovio cairosvg mido numpy
+    .venv/bin/pip install --no-deps tinysoundfont   # sa dépendance pyaudio ne sert qu'à la lecture en direct
+    .venv/bin/python gen_musicxml.py && .venv/bin/python make_pdf.py
+
+Le répertoire `.venv/` est ignoré par git ; utilisez `.venv/bin/python`
+pour tous les scripts de ce dépôt.
+
 - `make_audio.py` — rend le cantique en audio (`Cantique_instrumental.mp3`) :
   chœur + orgue superposés à partir de la banque de sons GeneralUser GS
   (téléchargée automatiquement), avec phrasé, ritardando et réverbération.
