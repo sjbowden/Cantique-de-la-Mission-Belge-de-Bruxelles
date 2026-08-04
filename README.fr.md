@@ -99,9 +99,12 @@ MKL y dirige (notamment AMD) plantent pendant la synthèse. Correction :
 
     make isis-mkl-fix
 
-qui fait pointer les `libmkl_def.so` / `libmkl_vml_def.so` manquants
-vers les noyaux AVX2 fournis (cibles équivalentes ; tout processeur AMD
-moderne a AVX2).
+qui compile un petit shim LD_PRELOAD (nécessite `cc`) faisant renvoyer
+vrai au test « processeur Intel » de MKL, qui utilise alors le noyau
+AVX2 fourni au lieu d'exiger le noyau générique manquant. Tout
+processeur AMD moderne a AVX2. (Faire pointer libmkl_def.so vers le
+noyau AVX2 ne fonctionne pas : cette version de MKL vérifie le « type »
+des noyaux et rejette le substitut.)
 
 ### Tentative abandonnée : eCantorix (espeak + MBROLA)
 Nous avons d'abord essayé la voie entièrement libre — eCantorix pilotant

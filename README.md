@@ -96,9 +96,11 @@ dispatches there (notably AMD) crash during synthesis. Fix with
 
     make isis-mkl-fix
 
-which links the missing `libmkl_def.so` / `libmkl_vml_def.so` to the
-bundled AVX2 kernels (equivalent dispatch targets; any modern AMD CPU
-has AVX2).
+which compiles a tiny LD_PRELOAD shim (requires `cc`) making MKL's
+Intel-CPU check return true, so it dispatches the bundled AVX2 kernel
+instead of demanding the missing generic one. Any modern AMD CPU has
+AVX2. (Linking libmkl_def.so to the AVX2 kernel does not work: this MKL
+validates kernel "types" and rejects the substitute.)
 
 ### Abandoned attempt: eCantorix (espeak + MBROLA)
 We first tried the fully-open-source route — eCantorix driving espeak

@@ -55,17 +55,18 @@ $(SUNG_MP3) &: make_isis_audio.py $(ISISCFGS)
 	@test -d ISiS || { echo 'ISiS not installed - see README "Getting ISiS"'; exit 1; }
 	$(PY) make_isis_audio.py
 
-# ISiS bundles Intel MKL without its generic CPU kernel (libmkl_def.so).
-# CPUs that MKL dispatches to that kernel (notably AMD) crash with
-# "Cannot load libmkl_def.so". The bundled kernels are interchangeable
-# dispatch targets, so point the missing ones at the AVX2 versions
-# (any modern AMD CPU has AVX2).
+# ISiS bundles Intel MKL, which routes non-Intel CPUs (notably AMD) to a
+# generic kernel (libmkl_def.so) that is missing from the bundle - and
+# rejects substitutes ("MKL type 5 is not suitable..."). The fix is the
+# standard one: preload a shim that makes MKL's Intel-CPU check return
+# true, so it dispatches the bundled AVX2 kernel (all modern AMD CPUs
+# have AVX2). Requires a C compiler (cc).
 .PHONY: isis-mkl-fix
 isis-mkl-fix:
-	cd ISiS/ISiS_V*/ISiS/_internal && \
-	  ln -sf libmkl_avx2.so libmkl_def.so && \
-	  ln -sf libmkl_vml_avx2.so libmkl_vml_def.so
-	@echo "MKL def kernels linked to AVX2 - retry: make sung"
+	printf 'int mkl_serv_intel_cpu(void){return 1;}\nint mkl_serv_intel_cpu_true(void){return 1;}\n' > fakeintel.c
+	cc -shared -fPIC -O2 -o "$$(ls -d ISiS/ISiS_V*/ISiS/_internal | head -1)/libfakeintel.so" fakeintel.c
+	rm -f fakeintel.c ISiS/ISiS_V*/ISiS/_internal/libmkl_def.so ISiS/ISiS_V*/ISiS/_internal/libmkl_vml_def.so
+	@echo "libfakeintel.so installed - retry: make sung"
 
 # --- cleaning --------------------------------------------------------------
 clean:

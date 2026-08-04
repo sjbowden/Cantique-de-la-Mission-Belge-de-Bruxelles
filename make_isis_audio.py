@@ -40,6 +40,12 @@ MIXES = [
 def render(part, voice):
     out = f'isis_{part}.wav'
     env = dict(os.environ, ISIS_CORPORA=CORPORA)
+    # 'make isis-mkl-fix' installs this shim for non-Intel CPUs, where the
+    # bundled MKL would otherwise demand a kernel that isn't shipped
+    shim = os.path.join(os.path.dirname(ISIS), 'ISiS', '_internal',
+                        'libfakeintel.so')
+    if os.path.exists(shim):
+        env['LD_PRELOAD'] = shim + ':' + env.get('LD_PRELOAD', '')
     r = subprocess.run([ISIS, '-m', f'Cantique_{part}.isis.cfg', '-sv', voice,
                         '--seed', '17', '-o', out],
                        env=env, text=True,
