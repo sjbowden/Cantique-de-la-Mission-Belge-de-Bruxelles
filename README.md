@@ -52,7 +52,9 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
 Real French singing voices sampled from real singers.
 `gen_isis_scores.py` writes hand-phonetized X-SAMPA score files
 (`Cantique_*.isis.cfg`, liaisons included); `make_isis_audio.py` renders
-S=EL, A=MS, T/B=RT and mixes into `Cantique_sung.mp3`.
+S=EL, A=MS, T/B=RT and mixes into `Cantique_sung.mp3`. Because the
+bass is RT (a tenor) transposed below his range, a variant without
+the bass part is also produced: `Cantique_sung_no_bass.mp3`.
 
     python3 gen_isis_scores.py && python3 make_isis_audio.py
 

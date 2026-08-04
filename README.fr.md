@@ -53,7 +53,9 @@ Sœur Lynne Matthews), transcrit à partir de la partition numérisée
 De vraies voix chantées françaises, échantillonnées sur de vrais chanteurs.
 `gen_isis_scores.py` écrit des partitions phonétisées à la main en X-SAMPA
 (`Cantique_*.isis.cfg`, liaisons comprises) ; `make_isis_audio.py` rend
-S=EL, A=MS, T/B=RT et mixe le tout dans `Cantique_sung.mp3`.
+S=EL, A=MS, T/B=RT et mixe le tout dans `Cantique_sung.mp3`. La basse
+étant RT (un ténor) transposé sous sa tessiture, une variante sans la
+partie de basse est aussi produite : `Cantique_sung_no_bass.mp3`.
 
     python3 gen_isis_scores.py && python3 make_isis_audio.py
 

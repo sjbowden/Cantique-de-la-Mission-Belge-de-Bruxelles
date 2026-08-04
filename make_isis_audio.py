@@ -16,7 +16,6 @@ import numpy as np
 
 ISIS = 'ISiS/ISiS_V1.3.0_Linux_x86_64/isis.sh'
 CORPORA = os.path.abspath('ISiS')
-MP3 = 'Cantique_sung.mp3'
 SR = 48000                      # ISiS native rate
 
 # (part, ISiS voice, gain, pan)
@@ -25,6 +24,13 @@ VOICES = [
     ('A', 'MS', 0.90, 0.25),
     ('T', 'RT', 0.90, -0.25),
     ('B', 'RT', 1.00, 0.25),
+]
+
+# The bass is RT (a tenor) transposed below his range; also offer a mix
+# without it. (name, parts included)
+MIXES = [
+    ('Cantique_sung', 'SATB'),
+    ('Cantique_sung_no_bass', 'SAT'),
 ]
 
 
@@ -48,21 +54,8 @@ def load(fn):
     return x
 
 
-def main():
-    tracks = []
-    for part, voice, gain, pan in VOICES:
-        print(f'--- ISiS: rendering {part} with {voice}')
-        x = load(render(part, voice))
-        tracks.append((x, gain, pan))
-
-    n = max(len(x) for x, _, _ in tracks) + SR
-    mix = np.zeros((n, 2))
-    for x, gain, pan in tracks:
-        st = np.stack([x * (1 - pan) / 2 + x / 2,
-                       x * (1 + pan) / 2 + x / 2], 1)
-        mix[:len(x)] += gain * st
-
-    # hall reverb (same design as the other renders)
+def reverb(mix):
+    """hall reverb (same design as the other renders)"""
     rng = np.random.default_rng(7)
     n_ir = int(2.2 * SR)
     t_ir = np.arange(n_ir) / SR
@@ -76,17 +69,35 @@ def main():
     wet = np.fft.irfft(np.fft.rfft(mix, n_fft, axis=0) *
                        np.fft.rfft(ir, n_fft, axis=0), n_fft, axis=0)[:len(mix)]
     mix = mix + 0.30 * wet
-    mix *= 0.89 / np.abs(mix).max()
+    return mix * (0.89 / np.abs(mix).max())
 
-    with wave.open('Cantique_sung.wav', 'wb') as w:
-        w.setnchannels(2)
-        w.setsampwidth(2)
-        w.setframerate(SR)
-        w.writeframes((mix * 32767).astype('<i2').tobytes())
-    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error',
-                    '-i', 'Cantique_sung.wav',
-                    '-codec:a', 'libmp3lame', '-q:a', '2', MP3], check=True)
-    print('wrote', MP3)
+
+def main():
+    tracks = {}
+    for part, voice, gain, pan in VOICES:
+        print(f'--- ISiS: rendering {part} with {voice}')
+        x = load(render(part, voice))
+        tracks[part] = (x, gain, pan)
+
+    for name, parts in MIXES:
+        n = max(len(tracks[p][0]) for p in parts) + SR
+        mix = np.zeros((n, 2))
+        for p in parts:
+            x, gain, pan = tracks[p]
+            st = np.stack([x * (1 - pan) / 2 + x / 2,
+                           x * (1 + pan) / 2 + x / 2], 1)
+            mix[:len(x)] += gain * st
+        mix = reverb(mix)
+        with wave.open(f'{name}.wav', 'wb') as w:
+            w.setnchannels(2)
+            w.setsampwidth(2)
+            w.setframerate(SR)
+            w.writeframes((mix * 32767).astype('<i2').tobytes())
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error',
+                        '-i', f'{name}.wav',
+                        '-codec:a', 'libmp3lame', '-q:a', '2',
+                        f'{name}.mp3'], check=True)
+        print('wrote', f'{name}.mp3')
 
 
 if __name__ == '__main__':
