@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the hymn to audio with a sampled pipe organ.
+"""Render the hymn to audio with a sampled pipe organ and soft strings.
 
 Builds the performance directly from the note tables in gen_musicxml.py,
 renders it through a General MIDI soundfont, and applies a convolution
@@ -98,6 +98,8 @@ def main():
                         + (6 if downbeat else 0) + int(rng.integers(-4, 5)))
                 events.append((t0, 'on', vi, key, v))        # organ 8'
                 events.append((t1, 'off', vi, key, 0))
+                events.append((t0, 'on', vi + 4, key, int(v * 0.5)))  # strings
+                events.append((t1, 'off', vi + 4, key, 0))
                 if vi == 3:                                  # organ 16' pedal
                     events.append((t0, 'on', 8, key - 12, int(v * 0.55)))
                     events.append((t1, 'off', 8, key - 12, 0))
@@ -105,8 +107,10 @@ def main():
 
     synth = tinysoundfont.Synth(gain=-3.0)
     sfid = synth.sfload(SF2)
+    STRINGS = 48                # GM: String Ensemble 1
     for ch in range(4):
         synth.program_select(ch, sfid, 0, ORGAN)
+        synth.program_select(ch + 4, sfid, 0, STRINGS)
     synth.program_select(8, sfid, 0, ORGAN)
 
     tail = 3.0                  # reverb tail after the release

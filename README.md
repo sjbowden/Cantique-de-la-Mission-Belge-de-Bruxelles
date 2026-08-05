@@ -10,7 +10,7 @@ Lynne Matthews) transcribed from the scanned sheet `Cantique_original_scan.jpg`.
 |---|---|
 | 🎼 [**Printable sheet music (PDF, US Letter)**](Cantique_de_la_Mission_Belge_de_Bruxelles.pdf) | one page, all 3 verses |
 | 🎼 [**Printable sheet music (PDF, A4)**](Cantique_de_la_Mission_Belge_de_Bruxelles_A4.pdf) | same, for A4 paper |
-| 🎹 [**Instrumental recording (MP3)**](Cantique_instrumental.mp3) | pipe organ, 3 verses |
+| 🎹 [**Instrumental recording (MP3)**](Cantique_instrumental.mp3) | pipe organ + soft strings, 3 verses |
 | 🎤 [**Sung recording (MP3)**](Cantique_sung.mp3) | four synthesized French voices singing the lyrics |
 | 📺 [**Wayne Shelton's rendition (YouTube)**](https://www.youtube.com/watch?v=y3b426utLxA) | a performance of the hymn |
 
@@ -53,7 +53,7 @@ The `.venv/` directory is gitignored; use `.venv/bin/python` for any of the
 scripts in this repo.
 
 - `make_audio.py` — renders the hymn to audio (`Cantique_instrumental.mp3`):
-  pipe organ (with 16' pedal) from the GeneralUser GS soundfont
+  pipe organ (with 16' pedal) and soft strings from the GeneralUser GS soundfont
   (auto-downloaded), with phrasing, ritardando, and hall reverb.
 - `Cantique_instrumental.mp3` — generated audio rendition (all 3 verses)
 - `gen_sung_musicxml.py` / `Cantique_sung.musicxml` — "singing edition":
