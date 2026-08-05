@@ -68,7 +68,7 @@ def load(fn):
     return x
 
 
-def reverb(mix, decay=1.0, wet=0.14):
+def reverb(mix, decay=0.6, wet=0.08):
     """room reverb — kept modest so the sung text stays intelligible"""
     rng = np.random.default_rng(7)
     n_ir = int(2.5 * decay * SR)
