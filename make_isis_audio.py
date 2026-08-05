@@ -68,21 +68,21 @@ def load(fn):
     return x
 
 
-def reverb(mix):
-    """hall reverb (same design as the other renders)"""
+def reverb(mix, decay=1.0, wet=0.14):
+    """room reverb — kept modest so the sung text stays intelligible"""
     rng = np.random.default_rng(7)
-    n_ir = int(2.2 * SR)
+    n_ir = int(2.5 * decay * SR)
     t_ir = np.arange(n_ir) / SR
-    ir = rng.standard_normal((n_ir, 2)) * np.exp(-t_ir / 0.8)[:, None]
+    ir = rng.standard_normal((n_ir, 2)) * np.exp(-t_ir / (decay * 0.36))[:, None]
     freqs = np.fft.rfftfreq(n_ir, 1 / SR)
     ir = np.fft.irfft(np.fft.rfft(ir, axis=0) /
                       (1.0 + (freqs / 3200.0) ** 2)[:, None], n=n_ir, axis=0)
     ir = np.vstack([np.zeros((int(0.02 * SR), 2)), ir])
     ir /= np.sqrt((ir ** 2).sum(axis=0)).max()
     n_fft = 1 << int(np.ceil(np.log2(len(mix) + len(ir))))
-    wet = np.fft.irfft(np.fft.rfft(mix, n_fft, axis=0) *
-                       np.fft.rfft(ir, n_fft, axis=0), n_fft, axis=0)[:len(mix)]
-    mix = mix + 0.30 * wet
+    wet_sig = np.fft.irfft(np.fft.rfft(mix, n_fft, axis=0) *
+                           np.fft.rfft(ir, n_fft, axis=0), n_fft, axis=0)[:len(mix)]
+    mix = mix + wet * wet_sig
     return mix * (0.89 / np.abs(mix).max())
 
 
