@@ -69,6 +69,24 @@ pour tous les scripts de ce dépôt.
     pip install tinysoundfont mido numpy   # plus ffmpeg sur le système
     python3 make_audio.py
 
+## Réglages
+Tout se regénère à partir de constantes Python — modifier, puis `make`
+(ou `make sung`). Celles qui valent la peine d'être touchées :
+
+| Quoi | Où |
+|------|-----|
+| Notes et paroles (référence) | `gen_musicxml.py` — tables `S`/`A`/`T`/`B` (hauteur, durée) et `LYR` (3 couplets) |
+| Tempo | `BPM = 104` dans `make_audio.py` et `gen_isis_scores.py` |
+| Son instrumental | `make_audio.py` : numéros de programmes GM `ORGAN`/`STRINGS` ; niveau des cordes (`v * 0.5`), pédale 16' (`v * 0.55`) |
+| Équilibre des voix et nuances | `make_audio.py` : vélocités `voices` (S/A/T/B), nuances par couplet `verse_delta`, articulation `GAP`/`breath` |
+| Ritardando et point d'orgue final | `make_audio.py` `build_time_map()` (facteurs 1,30 / 1,45) |
+| Réverbération instrumentale (grande salle) | bloc IR de `make_audio.py` : déclin 2,4 s, `0.26` wet |
+| Distribution des voix chantées | `make_isis_audio.py` `VOICES` : voix ISiS (EL/MS/RT), gain, panoramique par partie |
+| Mixages chantés produits | `make_isis_audio.py` `MIXES` (SATB complet, sans basse) |
+| Réverbération chantée | `make_isis_audio.py` `reverb(mix, decay=0.4, wet=0.04)` — historique : 2,2 s/30 % (trop d'écho) → 1,0/14 % → 0,6/8 % → soupçon actuel |
+| Phonèmes français (liaisons, etc.) | `gen_isis_scores.py` `P1`/`P2`/`P3` en X-SAMPA, une entrée par syllabe du soprano |
+| Mise en page / en-tête | `make_pdf.py` : options Verovio dans `render_page()`, position des crédits dans `style_header()` |
+
 ## Version chantée (ISiS — synthèse de chant de l'IRCAM)
 De vraies voix chantées françaises, échantillonnées sur de vrais chanteurs.
 `gen_isis_scores.py` écrit des partitions phonétisées à la main en X-SAMPA

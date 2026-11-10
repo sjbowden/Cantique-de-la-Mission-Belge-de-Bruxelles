@@ -66,6 +66,24 @@ scripts in this repo.
     pip install tinysoundfont mido numpy   # plus ffmpeg on the system
     python3 make_audio.py
 
+## Settings (tuning knobs)
+Everything regenerates from plain-Python constants — edit, then `make`
+(or `make sung`). The ones that have proven worth touching:
+
+| What | Where |
+|------|-------|
+| Notes & lyrics (source of truth) | `gen_musicxml.py` — tables `S`/`A`/`T`/`B` (pitch, duration) and `LYR` (3 verses) |
+| Tempo | `BPM = 104` in `make_audio.py` and `gen_isis_scores.py` |
+| Instrumental sound | `make_audio.py`: `ORGAN`/`STRINGS` GM patch numbers; string level (`v * 0.5`), 16' pedal level (`v * 0.55`) |
+| Voice balance & dynamics | `make_audio.py`: `voices` velocities (S/A/T/B), `verse_delta` per-verse dynamics, `GAP`/`breath` articulation |
+| Ritardando & final hold | `make_audio.py` `build_time_map()` (factors 1.30 / 1.45) |
+| Instrumental reverb (large hall) | `make_audio.py` IR block: 2.4 s decay, `0.26` wet |
+| Sung voice casting | `make_isis_audio.py` `VOICES`: ISiS voice (EL/MS/RT), gain, stereo pan per part |
+| Sung mixes produced | `make_isis_audio.py` `MIXES` (full SATB, no-bass) |
+| Sung reverb | `make_isis_audio.py` `reverb(mix, decay=0.4, wet=0.04)` — history: 2.2 s/30% (too echoey) → 1.0/14% → 0.6/8% → current whisper |
+| French phonemes (liaisons etc.) | `gen_isis_scores.py` `P1`/`P2`/`P3` X-SAMPA, one entry per soprano syllable |
+| Page layout / header styling | `make_pdf.py`: Verovio options in `render_page()`, credit positions in `style_header()` |
+
 ## Sung rendition (ISiS — IRCAM Singing Synthesis)
 Real French singing voices sampled from real singers.
 `gen_isis_scores.py` writes hand-phonetized X-SAMPA score files
