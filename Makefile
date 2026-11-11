@@ -1,7 +1,11 @@
 # Build all generated pieces of the Cantique repo.
 #
 #   make            - score, PDFs, preview, instrumental MP3, singing edition
-#   make sung       - the ISiS sung MP3s (requires ./ISiS/, see README)
+#   make sung       - the ISiS sung MP3s (requires ./ISiS/, see README).
+#                     Will not overwrite existing sung MP3s unless you add
+#                     FORCE_SUNG=1: ISiS renders differ between CPUs, so a
+#                     rebuild on another machine would replace the reference
+#                     recordings with a different take (README "Reproducibility")
 #   make everything - all of the above
 #   make clean      - remove intermediate files (kept out of git anyway)
 #   make distclean  - also remove all generated outputs, the venv, and the
@@ -54,6 +58,10 @@ $(ISISCFGS) &: gen_isis_scores.py gen_musicxml.py .venv/.stamp
 
 $(SUNG_MP3) &: make_isis_audio.py $(ISISCFGS)
 	@test -d ISiS || { echo 'ISiS not installed - see README "Getting ISiS"'; exit 1; }
+	@if [ "$(FORCE_SUNG)" != 1 ] && [ -n "$(wildcard $(SUNG_MP3))" ]; then \
+	  echo 'Not re-rendering the sung MP3s: they already exist, and ISiS renders'; \
+	  echo 'differ between CPUs (README "Reproducibility"). To replace them'; \
+	  echo 'on purpose:  make sung FORCE_SUNG=1'; exit 1; fi
 	$(PY) make_isis_audio.py
 
 # ISiS bundles Intel MKL, which routes non-Intel CPUs (notably AMD) to a

@@ -35,6 +35,9 @@ PDFs, preview, instrumental MP3, singing edition, and ISiS score files):
 
     make            # or: make sung / make everything / make clean / make distclean
 
+`make sung` will not overwrite existing sung MP3s unless you add
+`FORCE_SUNG=1` (see [Reproducibility](#reproducibility)).
+
 Or by hand:
 
     pip install verovio cairosvg pikepdf
@@ -68,7 +71,8 @@ scripts in this repo.
 
 ## Settings (tuning knobs)
 Everything regenerates from plain-Python constants — edit, then `make`
-(or `make sung`). The ones that have proven worth touching:
+(or `make sung FORCE_SUNG=1` for the sung settings). The ones that have
+proven worth touching:
 
 | What | Where |
 |------|-------|
@@ -145,13 +149,31 @@ For commercial-grade quality, import `Cantique_sung.musicxml` into ACE Studio
 
 ## Reproducibility
 Rebuilds are byte-identical on the same machine (Verovio's XML IDs are
-seeded; the PDFs are normalized with pikepdf, dates stripped). On a
-*different* machine, rebuilt PDFs and MP3s may differ byte-wise while
-being content-identical — embedded font files and the LAME encoder
-version vary between systems. If `git status` shows generated outputs
-as modified after a build and you didn't change any source, just
-`git restore` them; only commit refreshed outputs when the music,
-lyrics, or rendering actually changed.
+seeded; the PDFs are normalized with pikepdf, dates stripped; ISiS is
+run with a fixed seed). Across machines it depends on the output:
+
+- **Score, PDFs, preview, instrumental MP3:** same content everywhere.
+  The files may still differ byte-wise, because embedded fonts, the
+  Verovio version (stamped into the SVG) and the LAME encoder version
+  vary between systems.
+- **Sung MP3s: a different take on a different CPU.** ISiS produces the
+  same phoneme timing and picks the same voice samples everywhere, but
+  the fine pitch inflection of held notes depends on the processor
+  (typically ~9 cents, at most ~⅓ semitone; same melody and vibrato).
+  Engine, voices, scores, seed, glibc and environment were all ruled
+  out. So the committed sung MP3s are the reference recordings, and
+  `make sung` refuses to overwrite them unless you pass `FORCE_SUNG=1`.
+  Only force a re-render when you changed something sung (voices,
+  phonemes, mix, reverb), and do it on the machine that made the
+  committed takes so the other parts stay as they were.
+
+If `git status` shows generated outputs as modified after a build and
+you didn't change any source, just `git restore` them; only commit
+refreshed outputs when the music, lyrics, or rendering actually changed.
+
+ISiS's own `.wav` files embed the creation time and the full command
+line in their header, so their checksums differ on every run. To compare
+two renders, compare the audio samples, not the files.
 
 ## Editorial notes
 Lyrics were normalized from the engraving: es-prit, très, sans, grâce,

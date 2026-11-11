@@ -37,6 +37,9 @@ les partitions ISiS) :
 
     make            # ou : make sung / make everything / make clean / make distclean
 
+`make sung` n'écrase pas les MP3 chantés existants sauf si l'on ajoute
+`FORCE_SUNG=1` (voir [Reproductibilité](#reproductibilité)).
+
 Ou à la main :
 
     pip install verovio cairosvg pikepdf
@@ -71,7 +74,8 @@ pour tous les scripts de ce dépôt.
 
 ## Réglages
 Tout se regénère à partir de constantes Python — modifier, puis `make`
-(ou `make sung`). Celles qui valent la peine d'être touchées :
+(ou `make sung FORCE_SUNG=1` pour les réglages chantés). Celles qui
+valent la peine d'être touchées :
 
 | Quoi | Où |
 |------|-----|
@@ -152,14 +156,34 @@ Studio (français en cours de développement).
 ## Reproductibilité
 Les regénérations sont identiques à l'octet près sur une même machine
 (identifiants XML de Verovio initialisés par une graine ; PDF normalisés
-avec pikepdf, dates supprimées). Sur une machine *différente*, les PDF
-et MP3 regénérés peuvent différer octet par octet tout en ayant un
-contenu identique — les polices incorporées et la version de l'encodeur
-LAME varient d'un système à l'autre. Si `git status` montre des fichiers
-générés comme modifiés après une compilation sans changement des
-sources, faites simplement `git restore` ; ne validez des sorties
-regénérées que si la musique, les paroles ou le rendu ont réellement
-changé.
+avec pikepdf, dates supprimées ; ISiS lancé avec une graine fixe).
+D'une machine à l'autre, cela dépend de la sortie :
+
+- **Partition, PDF, aperçu, MP3 instrumental :** contenu identique
+  partout. Les fichiers peuvent toutefois différer octet par octet, car
+  les polices incorporées, la version de Verovio (inscrite dans le SVG)
+  et celle de l'encodeur LAME varient d'un système à l'autre.
+- **MP3 chantés : une autre prise sur un autre processeur.** ISiS
+  produit partout le même minutage des phonèmes et choisit les mêmes
+  échantillons de voix, mais la fine inflexion de hauteur des notes
+  tenues dépend du processeur (environ 9 cents en général, au plus
+  ~⅓ de demi-ton ; même mélodie, même vibrato). Moteur, voix,
+  partitions, graine, glibc et environnement ont tous été écartés. Les
+  MP3 chantés validés sont donc les enregistrements de référence, et
+  `make sung` refuse de les écraser sauf avec `FORCE_SUNG=1`. Ne forcez
+  un nouveau rendu que si vous avez modifié quelque chose de chanté
+  (voix, phonèmes, mixage, réverbération), et faites-le sur la machine
+  qui a produit les prises validées, afin que le reste ne change pas.
+
+Si `git status` montre des fichiers générés comme modifiés après une
+compilation sans changement des sources, faites simplement
+`git restore` ; ne validez des sorties regénérées que si la musique,
+les paroles ou le rendu ont réellement changé.
+
+Les fichiers `.wav` d'ISiS inscrivent dans leur en-tête la date de
+création et la ligne de commande complète : leurs sommes de contrôle
+changent donc à chaque rendu. Pour comparer deux rendus, comparez les
+échantillons audio, pas les fichiers.
 
 ## Notes éditoriales
 Les paroles ont été normalisées par rapport à la gravure : es-prit, très,
